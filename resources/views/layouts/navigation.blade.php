@@ -18,17 +18,30 @@
 
                 <!-- Navigation Links -->
             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-nav-link>
-
-                <x-nav-link :href="route('pacientes.index')" :active="request()->routeIs('pacientes.*')">
-                    {{ __('Pacientes') }}
-                </x-nav-link>
-
-                <x-nav-link :href="route('medicos.index')" :active="request()->routeIs('medicos.*')">
-                    {{ __('Médicos') }}
-                </x-nav-link>
+                @auth
+                    @if(Auth::user()->isPaciente())
+                        <x-nav-link :href="route('paciente.dashboard')" :active="request()->routeIs('paciente.*')">
+                            {{ __('Mi Panel') }}
+                        </x-nav-link>
+                    @elseif(Auth::user()->isMedico())
+                        <x-nav-link :href="route('medico.dashboard')" :active="request()->routeIs('medico.*')">
+                            {{ __('Panel Médico') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('pacientes.index')" :active="request()->routeIs('pacientes.*')">
+                            {{ __('Pacientes') }}
+                        </x-nav-link>
+                    @elseif(Auth::user()->isDirector())
+                        <x-nav-link :href="route('director.dashboard')" :active="request()->routeIs('director.*')">
+                            {{ __('Panel Director') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('pacientes.index')" :active="request()->routeIs('pacientes.*')">
+                            {{ __('Pacientes') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('medicos.index')" :active="request()->routeIs('medicos.*')">
+                            {{ __('Médicos') }}
+                        </x-nav-link>
+                    @endif
+                @endauth
             </div>
                 
             </div>
@@ -53,6 +66,29 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
+
+                        @if(Auth::user()->isPaciente())
+                            <x-dropdown-link :href="route('paciente.turnos')">
+                                {{ __('Mis Turnos') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('paciente.estudios')">
+                                {{ __('Mis Estudios') }}
+                            </x-dropdown-link>
+                        @elseif(Auth::user()->isMedico())
+                            <x-dropdown-link :href="route('medico.pacientes')">
+                                {{ __('Mis Pacientes') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('medico.turnos')">
+                                {{ __('Mis Turnos') }}
+                            </x-dropdown-link>
+                        @elseif(Auth::user()->isDirector())
+                            <x-dropdown-link :href="route('director.usuarios')">
+                                {{ __('Gestionar Usuarios') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('director.reportes')">
+                                {{ __('Reportes') }}
+                            </x-dropdown-link>
+                        @endif
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
@@ -83,11 +119,32 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+        @auth
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            @if(Auth::user()->isPaciente())
+                <x-responsive-nav-link :href="route('paciente.dashboard')" :active="request()->routeIs('paciente.*')">
+                    {{ __('Mi Panel') }}
+                </x-responsive-nav-link>
+            @elseif(Auth::user()->isMedico())
+                <x-responsive-nav-link :href="route('medico.dashboard')" :active="request()->routeIs('medico.*')">
+                    {{ __('Panel Médico') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('pacientes.index')" :active="request()->routeIs('pacientes.*')">
+                    {{ __('Pacientes') }}
+                </x-responsive-nav-link>
+            @elseif(Auth::user()->isDirector())
+                <x-responsive-nav-link :href="route('director.dashboard')" :active="request()->routeIs('director.*')">
+                    {{ __('Panel Director') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('pacientes.index')" :active="request()->routeIs('pacientes.*')">
+                    {{ __('Pacientes') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('medicos.index')" :active="request()->routeIs('medicos.*')">
+                    {{ __('Médicos') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
+        @endauth
 
         <!-- Responsive Settings Options -->
         @auth
@@ -101,6 +158,29 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
+
+                @if(Auth::user()->isPaciente())
+                    <x-responsive-nav-link :href="route('paciente.turnos')">
+                        {{ __('Mis Turnos') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('paciente.estudios')">
+                        {{ __('Mis Estudios') }}
+                    </x-responsive-nav-link>
+                @elseif(Auth::user()->isMedico())
+                    <x-responsive-nav-link :href="route('medico.pacientes')">
+                        {{ __('Mis Pacientes') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('medico.turnos')">
+                        {{ __('Mis Turnos') }}
+                    </x-responsive-nav-link>
+                @elseif(Auth::user()->isDirector())
+                    <x-responsive-nav-link :href="route('director.usuarios')">
+                        {{ __('Gestionar Usuarios') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('director.reportes')">
+                        {{ __('Reportes') }}
+                    </x-responsive-nav-link>
+                @endif
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
