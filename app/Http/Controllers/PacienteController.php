@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paciente;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PacienteController extends Controller
 {
@@ -35,9 +37,23 @@ class PacienteController extends Controller
             'nombre'   => 'required|string|max:100',
             'apellido' => 'required|string|max:100',
             'dni'      => 'required|string|max:20|unique:pacientes,dni',
+            'email'    => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|confirmed|min:8',
         ]);
 
-        \App\Models\Paciente::create($datosValidados);
+        $user = User::create([
+            'name' => $request->nombre . ' ' . $request->apellido,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'role' => 'paciente',
+        ]);
+
+        Paciente::create([
+            'user_id' => $user->id,
+            'nombre' => $request->nombre,
+            'apellido' => $request->apellido,
+            'dni' => $request->dni,
+        ]);
 
         return redirect()->route('pacientes.index');
     }

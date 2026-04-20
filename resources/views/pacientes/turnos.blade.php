@@ -23,18 +23,32 @@
             </div>
 
             <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">Historial de Turnos</h2>
+                    <a href="{{ route('paciente.turnos.crear') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        Solicitar Nuevo Turno
+                    </a>
+                </div>
+
                 @if(count($turnos) > 0)
                     <div class="space-y-4">
                         @foreach($turnos as $turno)
                             <div class="border border-gray-200 rounded-lg p-4">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h3 class="text-lg font-semibold">{{ $turno->titulo ?? 'Turno Médico' }}</h3>
-                                        <p class="text-gray-600">{{ $turno->fecha ?? 'Fecha pendiente' }}</p>
-                                        <p class="text-gray-600">{{ $turno->medico ?? 'Médico asignado' }}</p>
+                                        <h3 class="text-lg font-semibold">Turno con {{ $turno->medico->user->name }}</h3>
+                                        <p class="text-gray-600">Especialidad: {{ $turno->medico->especialidad }}</p>
+                                        <p class="text-gray-600">Fecha: {{ $turno->fecha->format('d/m/Y') }} a las {{ $turno->hora->format('H:i') }}</p>
+                                        @if($turno->notas)
+                                            <p class="text-gray-600">Notas: {{ $turno->notas }}</p>
+                                        @endif
                                     </div>
-                                    <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $turno->estado == 'confirmado' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800' }}">
-                                        {{ ucfirst($turno->estado ?? 'Pendiente') }}
+                                    <span class="px-2 py-1 text-xs font-semibold rounded-full 
+                                        @if($turno->estado == 'confirmado') bg-green-100 text-green-800
+                                        @elseif($turno->estado == 'pendiente') bg-yellow-100 text-yellow-800
+                                        @elseif($turno->estado == 'cancelado') bg-red-100 text-red-800
+                                        @else bg-gray-100 text-gray-800 @endif">
+                                        {{ ucfirst($turno->estado) }}
                                     </span>
                                 </div>
                             </div>

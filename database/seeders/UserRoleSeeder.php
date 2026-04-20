@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Paciente;
 use App\Models\User;
+use App\Models\Medico;
 
 class UserRoleSeeder extends Seeder
 {
@@ -25,12 +26,17 @@ class UserRoleSeeder extends Seeder
         ]);
 
         // Crear usuario médico
-        User::create([
+        $medicoUser = User::create([
             'name' => 'Dr. Juan Pérez',
             'email' => 'medico@example.com',
             'password' => Hash::make('password'),
             'role' => 'medico',
             'email_verified_at' => now(),
+        ]);
+
+        Medico::create([
+            'user_id' => $medicoUser->id,
+            'especialidad' => 'Cardiología',
         ]);
 
         // Crear usuario paciente

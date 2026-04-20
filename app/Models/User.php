@@ -48,6 +48,16 @@ class User extends Authenticatable
         ];
     }
 
+    public function paciente()
+    {
+        return $this->hasOne(Paciente::class);
+    }
+
+    public function medico()
+    {
+        return $this->hasOne(Medico::class);
+    }
+
     /**
      * Check if user has a specific role
      */
@@ -86,13 +96,5 @@ class User extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->isMedico() || $this->isDirector();
-    }
-
-    /**
-     * Get the patient profile for the user.
-     */
-    public function paciente()
-    {
-        return $this->hasOne(Paciente::class);
     }
 }

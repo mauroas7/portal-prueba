@@ -53,7 +53,11 @@
                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
                                 <input id="password_confirmation" name="password_confirmation" type="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
                             </div>
-                        </div>
+                            <div>
+                                <label for="especialidad" class="block text-sm font-medium text-gray-700">Especialidad</label>
+                                <input id="especialidad" name="especialidad" type="text" value="{{ old('especialidad') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                                @error('especialidad')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                            </div>
                         <div class="mt-4">
                             <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
                                 Crear médico
@@ -69,6 +73,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Especialidad</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Registro</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
                             </tr>
@@ -86,6 +91,13 @@
                                             @endif">
                                             {{ ucfirst($usuario->role) }}
                                         </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        @if($usuario->role == 'medico' && $usuario->medico)
+                                            {{ $usuario->medico->especialidad }}
+                                        @else
+                                            -
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $usuario->created_at->format('d/m/Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">

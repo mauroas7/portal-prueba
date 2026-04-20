@@ -28,11 +28,16 @@
                         </h2>
                     </div>
                     <p class="mt-4 text-gray-500 leading-relaxed">
-                        Consulta y gestiona tus próximos turnos médicos.
+                        Consulta y gestiona tus próximos turnos médicos. Solicita nuevos turnos con facilidad.
                     </p>
-                    <a href="{{ route('paciente.turnos') }}" class="mt-4 inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        Ver Turnos
-                    </a>
+                    <div class="mt-4 flex space-x-2">
+                        <a href="{{ route('paciente.turnos') }}" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            Ver Turnos
+                        </a>
+                        <a href="{{ route('paciente.turnos.crear') }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                            Pedir Nuevo Turno
+                        </a>
+                    </div>
                 </div>
 
                 <div>

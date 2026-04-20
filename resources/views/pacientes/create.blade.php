@@ -35,6 +35,21 @@
             <input type="text" name="dni" required>
         </div>
         <br>
+        <div>
+            <label>Email:</label><br>
+            <input type="email" name="email" required>
+        </div>
+        <br>
+        <div>
+            <label>Password:</label><br>
+            <input type="password" name="password" required>
+        </div>
+        <br>
+        <div>
+            <label>Confirmar Password:</label><br>
+            <input type="password" name="password_confirmation" required>
+        </div>
+        <br>
         <button type="submit">Guardar Paciente</button>
     </form>
 

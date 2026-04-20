@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Paciente;
 use App\Models\User;
+use App\Models\Medico;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,9 +24,11 @@ class DirectorDashboardController extends Controller
 
         // Estadísticas generales
         $totalPacientes = Paciente::count();
-        $totalMedicos = User::where('role', 'medico')->count();
+        $totalMedicos = Medico::count();
         $totalDirectores = User::where('role', 'director')->count();
-        $totalUsuarios = User::count();
+        
+        // Sumamos los totales reales
+        $totalUsuarios = $totalPacientes + $totalMedicos + $totalDirectores;
 
         // Otras métricas que el director podría querer ver
         $turnosHoy = 0; // Implementar
@@ -48,7 +51,7 @@ class DirectorDashboardController extends Controller
     public function usuarios()
     {
         $user = Auth::user();
-        $usuarios = User::all();
+        $usuarios = User::with('medico')->get();
 
         return view('director.usuarios', compact('user', 'usuarios'));
     }
@@ -72,13 +75,19 @@ class DirectorDashboardController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', 'min:8'],
+            'especialidad' => ['required', 'string', 'max:255'],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role' => 'medico',
+        ]);
+
+        Medico::create([
+            'user_id' => $user->id,
+            'especialidad' => $request->especialidad,
         ]);
 
         return redirect()->route('director.usuarios')->with('success', 'Médico creado correctamente.');

@@ -19,6 +19,8 @@ Route::get('/', function () {
 Route::middleware(['auth', 'role:paciente'])->group(function () {
     Route::get('/paciente/dashboard', [PacienteDashboardController::class, 'dashboard'])->name('paciente.dashboard');
     Route::get('/paciente/turnos', [PacienteDashboardController::class, 'turnos'])->name('paciente.turnos');
+    Route::get('/paciente/turnos/crear', [PacienteDashboardController::class, 'crearTurno'])->name('paciente.turnos.crear');
+    Route::post('/paciente/turnos', [PacienteDashboardController::class, 'storeTurno'])->name('paciente.turnos.store');
     Route::get('/paciente/estudios', [PacienteDashboardController::class, 'estudios'])->name('paciente.estudios');
     Route::get('/paciente/perfil', [PacienteDashboardController::class, 'perfil'])->name('paciente.perfil');
 });
@@ -27,6 +29,8 @@ Route::middleware(['auth', 'role:medico'])->group(function () {
     Route::get('/medico/dashboard', [MedicoDashboardController::class, 'dashboard'])->name('medico.dashboard');
     Route::get('/medico/pacientes', [MedicoDashboardController::class, 'pacientes'])->name('medico.pacientes');
     Route::get('/medico/turnos', [MedicoDashboardController::class, 'turnos'])->name('medico.turnos');
+    Route::patch('/medico/turnos/{turno}/confirmar', [MedicoDashboardController::class, 'confirmarTurno'])->name('medico.turnos.confirmar');
+    Route::patch('/medico/turnos/{turno}/cancelar', [MedicoDashboardController::class, 'cancelarTurno'])->name('medico.turnos.cancelar');
     Route::get('/medico/perfil', [MedicoDashboardController::class, 'perfil'])->name('medico.perfil');
 });
 
