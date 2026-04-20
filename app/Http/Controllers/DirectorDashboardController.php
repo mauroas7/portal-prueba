@@ -54,6 +54,78 @@ class DirectorDashboardController extends Controller
     }
 
     /**
+     * Mostrar formulario para crear médico
+     */
+    public function createMedico()
+    {
+        $user = Auth::user();
+
+        return view('director.create-medico', compact('user'));
+    }
+
+    /**
+     * Guardar médico nuevo creado por el director
+     */
+    public function storeMedico(Request $request)
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'confirmed', 'min:8'],
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => 'medico',
+        ]);
+
+        return redirect()->route('director.usuarios')->with('success', 'Médico creado correctamente.');
+    }
+
+    /**
+     * Actualizar rol de un usuario.
+     */
+    public function updateRole(Request $request, User $usuario)
+    {
+        $request->validate([
+            'role' => ['required', 'in:paciente,medico'],
+        ]);
+
+        if ($usuario->id === Auth::id()) {
+            return redirect()->route('director.usuarios')->with('success', 'No puedes cambiar tu propio rol.');
+        }
+
+        if ($usuario->role === 'director') {
+            return redirect()->route('director.usuarios')->with('success', 'No se puede cambiar el rol de otro director.');
+        }
+
+        $usuario->role = $request->role;
+        $usuario->save();
+
+        return redirect()->route('director.usuarios')->with('success', 'Rol actualizado correctamente.');
+    }
+
+    /**
+     * Eliminar un usuario.
+     */
+    public function destroy(User $usuario)
+    {
+        if ($usuario->id === Auth::id()) {
+            return redirect()->route('director.usuarios')->with('success', 'No puedes eliminar tu propia cuenta desde aquí.');
+        }
+
+        if ($usuario->role === 'director') {
+            return redirect()->route('director.usuarios')->with('success', 'No se puede eliminar a otro director.');
+        }
+
+        $usuario->delete();
+
+        return redirect()->route('director.usuarios')->with('success', 'Usuario eliminado correctamente.');
+    }
+
+    /**
      * Reportes y estadísticas
      */
     public function reportes()

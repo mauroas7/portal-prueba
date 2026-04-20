@@ -6,10 +6,13 @@ use App\Http\Controllers\MedicoController;
 use App\Http\Controllers\PacienteDashboardController;
 use App\Http\Controllers\MedicoDashboardController;
 use App\Http\Controllers\DirectorDashboardController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home');
+    return Auth::check()
+        ? redirect()->route('dashboard')
+        : redirect()->route('login');
 })->name('home');
 
 // Rutas específicas por rol
@@ -30,6 +33,9 @@ Route::middleware(['auth', 'role:medico'])->group(function () {
 Route::middleware(['auth', 'role:director'])->group(function () {
     Route::get('/director/dashboard', [DirectorDashboardController::class, 'dashboard'])->name('director.dashboard');
     Route::get('/director/usuarios', [DirectorDashboardController::class, 'usuarios'])->name('director.usuarios');
+    Route::post('/director/medicos', [DirectorDashboardController::class, 'storeMedico'])->name('director.medico.store');
+    Route::put('/director/usuarios/{usuario}/role', [DirectorDashboardController::class, 'updateRole'])->name('director.usuario.updateRole');
+    Route::delete('/director/usuarios/{usuario}', [DirectorDashboardController::class, 'destroy'])->name('director.usuario.destroy');
     Route::get('/director/reportes', [DirectorDashboardController::class, 'reportes'])->name('director.reportes');
     Route::get('/director/configuracion', [DirectorDashboardController::class, 'configuracion'])->name('director.configuracion');
 });

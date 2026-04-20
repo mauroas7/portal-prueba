@@ -26,7 +26,7 @@ class MedicoDashboardController extends Controller
         $turnosHoy = 0; // Implementar según tu modelo de turnos
         $turnosProximos = []; // Implementar según tu modelo de turnos
 
-        return view('medico.dashboard', compact('user', 'pacientesCount', 'turnosHoy', 'turnosProximos'));
+        return view('medicos.dashboard', compact('user', 'pacientesCount', 'turnosHoy', 'turnosProximos'));
     }
 
     /**
@@ -37,7 +37,7 @@ class MedicoDashboardController extends Controller
         $user = Auth::user();
         $pacientes = Paciente::all(); // O filtrar por médico asignado
 
-        return view('medico.pacientes', compact('user', 'pacientes'));
+        return view('medicos.pacientes', compact('user', 'pacientes'));
     }
 
     /**
@@ -50,7 +50,7 @@ class MedicoDashboardController extends Controller
         // Lógica para obtener turnos del médico
         $turnos = []; // Implementar según tu modelo de turnos
 
-        return view('medico.turnos', compact('user', 'turnos'));
+        return view('medicos.turnos', compact('user', 'turnos'));
     }
 
     /**
@@ -60,6 +60,6 @@ class MedicoDashboardController extends Controller
     {
         $user = Auth::user();
 
-        return view('medico.perfil', compact('user'));
+        return view('medicos.perfil', compact('user'));
     }
 }

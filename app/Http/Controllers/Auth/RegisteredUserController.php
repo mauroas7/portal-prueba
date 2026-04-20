@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Paciente;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -40,6 +41,18 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'paciente',
+        ]);
+
+        $nameParts = preg_split('/\s+/', trim($request->name), 2);
+        $nombre = $nameParts[0] ?? $request->name;
+        $apellido = $nameParts[1] ?? '';
+
+        Paciente::create([
+            'user_id' => $user->id,
+            'nombre' => $nombre,
+            'apellido' => $apellido,
+            'dni' => 'PAC-' . $user->id,
         ]);
 
         event(new Registered($user));

@@ -87,4 +87,12 @@ class User extends Authenticatable
     {
         return $this->isMedico() || $this->isDirector();
     }
+
+    /**
+     * Get the patient profile for the user.
+     */
+    public function paciente()
+    {
+        return $this->hasOne(Paciente::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Paciente;
 use App\Models\User;
 
 class UserRoleSeeder extends Seeder
@@ -33,7 +34,7 @@ class UserRoleSeeder extends Seeder
         ]);
 
         // Crear usuario paciente
-        User::create([
+        $paciente1 = User::create([
             'name' => 'María García',
             'email' => 'paciente@example.com',
             'password' => Hash::make('password'),
@@ -41,8 +42,15 @@ class UserRoleSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
+        Paciente::create([
+            'user_id' => $paciente1->id,
+            'nombre' => 'María',
+            'apellido' => 'García',
+            'dni' => 'PAC-' . $paciente1->id,
+        ]);
+
         // Crear más usuarios de prueba
-        User::create([
+        $medico2 = User::create([
             'name' => 'Dr. Ana López',
             'email' => 'medico2@example.com',
             'password' => Hash::make('password'),
@@ -50,12 +58,19 @@ class UserRoleSeeder extends Seeder
             'email_verified_at' => now(),
         ]);
 
-        User::create([
+        $paciente2 = User::create([
             'name' => 'Carlos Rodríguez',
             'email' => 'paciente2@example.com',
             'password' => Hash::make('password'),
             'role' => 'paciente',
             'email_verified_at' => now(),
+        ]);
+
+        Paciente::create([
+            'user_id' => $paciente2->id,
+            'nombre' => 'Carlos',
+            'apellido' => 'Rodríguez',
+            'dni' => 'PAC-' . $paciente2->id,
         ]);
     }
 }

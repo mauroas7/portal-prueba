@@ -25,7 +25,7 @@ class PacienteDashboardController extends Controller
         // - Historial médico
         // - etc.
 
-        return view('paciente.dashboard', compact('user'));
+        return view('pacientes.dashboard', compact('user'));
     }
 
     /**
@@ -38,7 +38,7 @@ class PacienteDashboardController extends Controller
         // Lógica para obtener turnos del paciente
         $turnos = []; // Implementar según tu modelo de turnos
 
-        return view('paciente.turnos', compact('user', 'turnos'));
+        return view('pacientes.turnos', compact('user', 'turnos'));
     }
 
     /**
@@ -51,7 +51,7 @@ class PacienteDashboardController extends Controller
         // Lógica para obtener estudios del paciente
         $estudios = []; // Implementar según tu modelo de estudios
 
-        return view('paciente.estudios', compact('user', 'estudios'));
+        return view('pacientes.estudios', compact('user', 'estudios'));
     }
 
     /**
@@ -61,6 +61,6 @@ class PacienteDashboardController extends Controller
     {
         $user = Auth::user();
 
-        return view('paciente.perfil', compact('user'));
+        return view('pacientes.perfil', compact('user'));
     }
 }

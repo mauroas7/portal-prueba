@@ -11,8 +11,17 @@ class Paciente extends Model
 
     // "Lista blanca" de campos permitidos para la asignación masiva
     protected $fillable = [
-            'nombre',
-            'apellido', 
-            'dni',          
-        ];
+        'user_id',
+        'nombre',
+        'apellido',
+        'dni',
+    ];
+
+    /**
+     * Get the user account associated with the patient profile.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

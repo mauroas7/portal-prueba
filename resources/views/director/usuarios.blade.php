@@ -23,6 +23,45 @@
             </div>
 
             <div class="p-6">
+                @if(session('success'))
+                    <div class="mb-6 rounded-lg bg-green-50 border border-green-200 p-4 text-green-900">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                <div class="mb-6 rounded-lg border border-gray-200 p-6 bg-gray-50">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-4">Crear médico</h2>
+                    <form method="POST" action="{{ route('director.medico.store') }}">
+                        @csrf
+                        <div class="grid gap-4 md:grid-cols-3">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Nombre</label>
+                                <input id="name" name="name" type="text" value="{{ old('name') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                                @error('name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input id="email" name="email" type="email" value="{{ old('email') }}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                                @error('email')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                                <input id="password" name="password" type="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                                @error('password')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                            </div>
+                            <div>
+                                <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar contraseña</label>
+                                <input id="password_confirmation" name="password_confirmation" type="password" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                Crear médico
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
@@ -50,8 +89,25 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $usuario->created_at->format('d/m/Y') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                        <button class="text-blue-600 hover:text-blue-900 mr-3">Editar Rol</button>
-                                        <button class="text-red-600 hover:text-red-900">Eliminar</button>
+                                        @if($usuario->id !== auth()->id() && $usuario->role !== 'director')
+                                            <form method="POST" action="{{ route('director.usuario.updateRole', $usuario) }}" class="inline-flex items-center mr-3">
+                                                @csrf
+                                                @method('PUT')
+                                                <select name="role" class="border-gray-300 rounded-md text-sm text-gray-700">
+                                                    <option value="paciente" {{ $usuario->role === 'paciente' ? 'selected' : '' }}>Paciente</option>
+                                                    <option value="medico" {{ $usuario->role === 'medico' ? 'selected' : '' }}>Médico</option>
+                                                </select>
+                                                <button type="submit" class="ms-2 inline-flex items-center px-3 py-1 bg-blue-600 text-white rounded-md text-xs uppercase tracking-widest hover:bg-blue-700">Guardar</button>
+                                            </form>
+
+                                            <form method="POST" action="{{ route('director.usuario.destroy', $usuario) }}" class="inline-flex items-center">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-900 text-xs uppercase tracking-widest" onclick="return confirm('¿Estás seguro que quieres eliminar este usuario?')">Eliminar</button>
+                                            </form>
+                                        @else
+                                            <span class="text-gray-400 text-xs">Sin acciones</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
